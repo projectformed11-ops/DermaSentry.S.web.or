@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Derma Sentry Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #F5F5F5; /* 60% */
+            --support-bg: #FAFAFA; /* 30% */
+            --accent-color: #191970; /* 10% */
+            --skeleton-border: #E0E0E0;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: var(--primary-bg);
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100vw;
+            background-color: var(--support-bg);
+            min-height: 100vh;
+            padding: 30px 15px 50px 15px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header section - กรอบล้อมรอบหัวข้อหลัก */
+        .header-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            font-size: clamp(20px, 6vw, 24px);
+            margin: 0 auto;
+            display: inline-block;
+            padding: 12px 20px;
+            border: 2.5px solid var(--accent-color);
+            border-radius: 8px;
+            font-weight: 700;
+            background: #FFFFFF;
+        }
+
+        .subtitle {
+            display: block;
+            color: var(--accent-color);
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        /* Page Management */
+        .page {
+            display: none;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section-title {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 15px;
+            margin: 20px 0;
+            background: rgba(25, 25, 112, 0.05);
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        /* Question Card Style */
+        .question-card {
+            background: #FFFFFF;
+            border: 1px solid var(--skeleton-border);
+            border-radius: 12px;
+            padding: 20px 15px;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .options-group {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .option-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .score-num {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            background: #fff;
+            margin: 0;
+        }
+
+        input[type="radio"]:checked {
+            background-color: var(--accent-color);
+        }
+
+        input[type="radio"]:checked::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Legend Box - แก้ไขเว้นบรรทัดตามสั่ง */
+        .legend-box {
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid var(--skeleton-border);
+            line-height: 1.8;
+        }
+
+        /* Button Style */
+        .btn-container {
+            margin-top: 20px;
+            padding-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            width: 100%;
+            max-width: 300px;
+            padding: 16px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(25, 25, 112, 0.2);
+            cursor: pointer;
+        }
+
+        .nav-button:active {
+            transform: scale(0.98);
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-section">
+        <h1>Derma Sentry Score</h1>
+        <span class="subtitle">แบบประเมินความพึงพอใจ</span>
+    </div>
+
+    <div class="legend-box">
+        <strong>เกณฑ์การให้คะแนน:</strong><br>
+        1 = พึงพอใจน้อยที่สุด<br>
+        2 = พึงพอใจน้อย<br>
+        3 = ปานกลาง<br>
+        4 = พึงพอใจมาก<br>
+        5 = พึงพอใจมากที่สุด
+    </div>
+
+    <form id="mainForm">
+        <!-- หน้าที่ 1 -->
+        <div class="page active" id="page1">
+            <div class="section-title">1. ด้านประสิทธิภาพของระบบ</div>
+            <div class="question-card"><div class="question-text">ความรวดเร็วในการตอบกลับของแชทบอต</div><div class="options-group" id="group_q1"></div></div>
+            <div class="question-card"><div class="question-text">ความถูกต้องแม่นยำในการวิเคราะห์อาการผิวหนังเบื้องต้น</div><div class="options-group" id="group_q2"></div></div>
+            <div class="question-card"><div class="question-text">ระบบสามารถคัดแยกประเภทข้อมูล (ข้อความและรูปภาพ) ได้อย่างถูกต้อง</div><div class="options-group" id="group_q3"></div></div>
+            <div class="btn-container">
+                <button type="button" class="nav-button" onclick="navigate(1)">ถัดไป</button>
+            </div>
+        </div>
+
+        <!-- หน้าที่ 2 -->
+        <div class="page" id="page2">
+            <div class="section-title">2. ด้านการใช้งาน</div>
+            <div class="question-card"><div class="question-text">ความสะดวกในการเข้าใช้งานผ่านแอปพลิเคชัน LINE</div><div class="options-group" id="group_q4"></div></div>
+            <div class="question-card"><div class="question-text">ความสะดวกในการใช้งานเมนูหรือขั้นตอนการส่งข้อมูลเพื่อทำการวิเคราะห์</div><div class="options-group" id="group_q5"></div></div>
+            <div class="question-card"><div class="question-text">ความชัดเจนและเข้าใจง่ายของภาษาที่ปัญญาประดิษฐ์ (AI) ใช้ในการตอบกลับ</div><div class="options-group" id="group_q6"></div></div>
+            <div class="question-card"><div class="question-text">ความเหมาะสมของรูปแบบการนำเสนอข้อมูล</div><div class="options-group" id="group_q7"></div></div>
+            <div class="btn-container">
+                <button type="button" class="nav-button" onclick="navigate(2)">ถัดไป</button>
+            </div>
+        </div>
+
+        <!-- หน้าที่ 3 -->
+        <div class="page" id="page3">
+            <div class="section-title">3. ด้านประโยชน์และการนำไปใช้</div>
+            <div class="question-card"><div class="question-text">ระบบช่วยลดความวิตกกังวลเกี่ยวกับอาการผิดปกติทางผิวหนังเบื้องต้นได้</div><div class="options-group" id="group_q8"></div></div>
+            <div class="question-card"><div class="question-text">ข้อมูลที่ได้รับมีประโยชน์ต่อการตัดสินใจในการไปพบแพทย์</div><div class="options-group" id="group_q9"></div></div>
+            <div class="question-card"><div class="question-text">ช่วยเพิ่มประสิทธิภาพและลดระยะเวลาในกระบวนการคัดกรองอาการเบื้องต้น</div><div class="options-group" id="group_q10"></div></div>
+            <div class="question-card"><div class="question-text">ความพึงพอใจในภาพรวมต่อการใช้งานนวัตกรรม Derma Sentry</div><div class="options-group" id="group_q11"></div></div>
+            <div class="btn-container">
+                <button type="button" class="nav-button" onclick="navigate(3)">เสร็จสิ้น</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function renderOptions(groupId, name) {
+        const container = document.getElementById(groupId);
+        let html = '';
+        for (let i = 1; i <= 5; i++) {
+            html += `
+                <div class="option-item">
+                    <span class="score-num">${i}</span>
+                    <input type="radio" name="${name}" value="${i}" required>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+    }
+
+    function init() {
+        for (let i = 1; i <= 11; i++) {
+            renderOptions(`group_q${i}`, `q${i}`);
+        }
+    }
+
+    function navigate(fromPage) {
+        const activePage = document.getElementById(`page${fromPage}`);
+        const radios = activePage.querySelectorAll('input[type="radio"]');
+        const names = [...new Set([...radios].map(r => r.name))];
+        const allChecked = names.every(n => document.querySelector(`input[name="${n}"]:checked`));
+
+        if (!allChecked) {
+            alert('กรุณากรอกข้อมูลให้ครบทุกข้อในหน้านี้');
+            return;
+        }
+
+        if (fromPage < 3) {
+            activePage.classList.remove('active');
+            document.getElementById(`page${fromPage + 1}`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            alert('บันทึกแบบประเมินเรียบร้อยแล้ว ขอบคุณครับ');
+        }
+    }
+
+    init();
+</script>
+
+</body>
+</html>
