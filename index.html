@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Derma Sentry Score</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
         :root {
-            --primary-bg: #F5F5F5; /* 60% */
-            --support-bg: #FAFAFA; /* 30% */
-            --accent-color: #191970; /* 10% */
+            --primary-bg: #F5F5F5;
+            --support-bg: #FAFAFA;
+            --accent-color: #191970;
             --skeleton-border: #E0E0E0;
         }
 
@@ -38,7 +39,6 @@
             flex-direction: column;
         }
 
-        /* Header section - กรอบล้อมรอบหัวข้อหลัก */
         .header-section {
             text-align: center;
             margin-bottom: 25px;
@@ -64,7 +64,6 @@
             margin-top: 15px;
         }
 
-        /* Page Management */
         .page {
             display: none;
             flex-direction: column;
@@ -91,7 +90,6 @@
             border-left: 4px solid var(--accent-color);
         }
 
-        /* Question Card Style */
         .question-card {
             background: #FFFFFF;
             border: 1px solid var(--skeleton-border);
@@ -156,7 +154,6 @@
             transform: translate(-50%, -50%);
         }
 
-        /* Legend Box - แก้ไขเว้นบรรทัดตามสั่ง */
         .legend-box {
             font-size: 13px;
             color: #444;
@@ -168,7 +165,6 @@
             line-height: 1.8;
         }
 
-        /* Button Style */
         .btn-container {
             margin-top: 20px;
             padding-bottom: 30px;
@@ -206,44 +202,37 @@
 
     <div class="legend-box">
         <strong>เกณฑ์การให้คะแนน:</strong><br>
-        1 = พึงพอใจน้อยที่สุด<br>
-        2 = พึงพอใจน้อย<br>
-        3 = ปานกลาง<br>
-        4 = พึงพอใจมาก<br>
-        5 = พึงพอใจมากที่สุด
+        1 = พึงพอใจน้อยที่สุด | 2 = น้อย | 3 = ปานกลาง | 4 = มาก | 5 = มากที่สุด
     </div>
 
     <form id="mainForm">
-        <!-- หน้าที่ 1 -->
         <div class="page active" id="page1">
             <div class="section-title">1. ด้านประสิทธิภาพของระบบ</div>
             <div class="question-card"><div class="question-text">ความรวดเร็วในการตอบกลับของแชทบอต</div><div class="options-group" id="group_q1"></div></div>
             <div class="question-card"><div class="question-text">ความถูกต้องแม่นยำในการวิเคราะห์อาการผิวหนังเบื้องต้น</div><div class="options-group" id="group_q2"></div></div>
-            <div class="question-card"><div class="question-text">ระบบสามารถคัดแยกประเภทข้อมูล (ข้อความและรูปภาพ) ได้อย่างถูกต้อง</div><div class="options-group" id="group_q3"></div></div>
+            <div class="question-card"><div class="question-text">ระบบสามารถคัดแยกประเภทข้อมูลได้อย่างถูกต้อง</div><div class="options-group" id="group_q3"></div></div>
             <div class="btn-container">
                 <button type="button" class="nav-button" onclick="navigate(1)">ถัดไป</button>
             </div>
         </div>
 
-        <!-- หน้าที่ 2 -->
         <div class="page" id="page2">
             <div class="section-title">2. ด้านการใช้งาน</div>
-            <div class="question-card"><div class="question-text">ความสะดวกในการเข้าใช้งานผ่านแอปพลิเคชัน LINE</div><div class="options-group" id="group_q4"></div></div>
-            <div class="question-card"><div class="question-text">ความสะดวกในการใช้งานเมนูหรือขั้นตอนการส่งข้อมูลเพื่อทำการวิเคราะห์</div><div class="options-group" id="group_q5"></div></div>
-            <div class="question-card"><div class="question-text">ความชัดเจนและเข้าใจง่ายของภาษาที่ปัญญาประดิษฐ์ (AI) ใช้ในการตอบกลับ</div><div class="options-group" id="group_q6"></div></div>
+            <div class="question-card"><div class="question-text">ความสะดวกในการเข้าใช้งานผ่าน LINE</div><div class="options-group" id="group_q4"></div></div>
+            <div class="question-card"><div class="question-text">ความสะดวกในการใช้งานเมนูหรือขั้นตอนต่างๆ</div><div class="options-group" id="group_q5"></div></div>
+            <div class="question-card"><div class="question-text">ความชัดเจนและเข้าใจง่ายของภาษา AI</div><div class="options-group" id="group_q6"></div></div>
             <div class="question-card"><div class="question-text">ความเหมาะสมของรูปแบบการนำเสนอข้อมูล</div><div class="options-group" id="group_q7"></div></div>
             <div class="btn-container">
                 <button type="button" class="nav-button" onclick="navigate(2)">ถัดไป</button>
             </div>
         </div>
 
-        <!-- หน้าที่ 3 -->
         <div class="page" id="page3">
             <div class="section-title">3. ด้านประโยชน์และการนำไปใช้</div>
-            <div class="question-card"><div class="question-text">ระบบช่วยลดความวิตกกังวลเกี่ยวกับอาการผิดปกติทางผิวหนังเบื้องต้นได้</div><div class="options-group" id="group_q8"></div></div>
-            <div class="question-card"><div class="question-text">ข้อมูลที่ได้รับมีประโยชน์ต่อการตัดสินใจในการไปพบแพทย์</div><div class="options-group" id="group_q9"></div></div>
-            <div class="question-card"><div class="question-text">ช่วยเพิ่มประสิทธิภาพและลดระยะเวลาในกระบวนการคัดกรองอาการเบื้องต้น</div><div class="options-group" id="group_q10"></div></div>
-            <div class="question-card"><div class="question-text">ความพึงพอใจในภาพรวมต่อการใช้งานนวัตกรรม Derma Sentry</div><div class="options-group" id="group_q11"></div></div>
+            <div class="question-card"><div class="question-text">ระบบช่วยลดความวิตกกังวลเกี่ยวกับอาการผิวหนังได้</div><div class="options-group" id="group_q8"></div></div>
+            <div class="question-card"><div class="question-text">ข้อมูลมีประโยชน์ต่อการตัดสินใจไปพบแพทย์</div><div class="options-group" id="group_q9"></div></div>
+            <div class="question-card"><div class="question-text">ช่วยลดระยะเวลาในกระบวนการคัดกรองเบื้องต้น</div><div class="options-group" id="group_q10"></div></div>
+            <div class="question-card"><div class="question-text">ความพึงพอใจในภาพรวมต่อการใช้งาน Derma Sentry</div><div class="options-group" id="group_q11"></div></div>
             <div class="btn-container">
                 <button type="button" class="nav-button" onclick="navigate(3)">เสร็จสิ้น</button>
             </div>
@@ -252,6 +241,23 @@
 </div>
 
 <script>
+    let userId = "";
+
+    // 2. เริ่มต้นระบบ LIFF ด้วย ID ของคุณ
+    async function main() {
+        try {
+            await liff.init({ liffId: "2010065247-O2cSXVhu" }); 
+            if (liff.isLoggedIn()) {
+                const profile = await liff.getProfile();
+                userId = profile.userId;
+            } else {
+                liff.login();
+            }
+        } catch (err) {
+            console.error("LIFF Error: ", err);
+        }
+    }
+
     function renderOptions(groupId, name) {
         const container = document.getElementById(groupId);
         let html = '';
@@ -270,9 +276,10 @@
         for (let i = 1; i <= 11; i++) {
             renderOptions(`group_q${i}`, `q${i}`);
         }
+        main();
     }
 
-    function navigate(fromPage) {
+    async function navigate(fromPage) {
         const activePage = document.getElementById(`page${fromPage}`);
         const radios = activePage.querySelectorAll('input[type="radio"]');
         const names = [...new Set([...radios].map(r => r.name))];
@@ -288,7 +295,32 @@
             document.getElementById(`page${fromPage + 1}`).classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            alert('บันทึกแบบประเมินเรียบร้อยแล้ว ขอบคุณครับ');
+            // 3. รวบรวมข้อมูลและส่งไปที่ n8n
+            const formData = new FormData(document.getElementById('mainForm'));
+            const data = {
+                userId: userId,
+                timestamp: new Date().toLocaleString('th-TH'),
+                project_name: "Analysis of Cutaneous Manifestations Record"
+            };
+            formData.forEach((value, key) => { data[key] = value; });
+
+            try {
+                const response = await fetch('https://piterpeter.app.n8n.cloud/webhook/DermaSentry', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('บันทึกแบบประเมินเรียบร้อยแล้ว ขอบคุณครับ');
+                    liff.closeWindow(); // ปิดหน้าจอทันที
+                } else {
+                    alert('ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
+            }
         }
     }
 
