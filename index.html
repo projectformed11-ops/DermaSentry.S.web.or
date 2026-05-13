@@ -243,7 +243,6 @@
 <script>
     let userId = "";
 
-    // 2. เริ่มต้นระบบ LIFF ด้วย ID ของคุณ
     async function main() {
         try {
             await liff.init({ liffId: "2010065247-O2cSXVhu" }); 
@@ -295,17 +294,17 @@
             document.getElementById(`page${fromPage + 1}`).classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            // 3. รวบรวมข้อมูลและส่งไปที่ n8n
             const formData = new FormData(document.getElementById('mainForm'));
             const data = {
                 userId: userId,
                 timestamp: new Date().toLocaleString('th-TH'),
                 project_name: "Analysis of Cutaneous Manifestations Record"
             };
-            formData.forEach((value, key) => { data[key] = value; });
+            formData.forEach((value, key) => { data[key] = parseInt(value); });
 
             try {
-                const response = await fetch('https://piterpeter.app.n8n.cloud/webhook/DermaSentry', {
+                // แก้ไขเป็น URL ใหม่ที่คุณแจ้งมาครับ
+                const response = await fetch('https://unimitor-25-her.app.n8n.cloud/webhook-test/DermaSentry', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
@@ -313,7 +312,7 @@
 
                 if (response.ok) {
                     alert('บันทึกแบบประเมินเรียบร้อยแล้ว ขอบคุณครับ');
-                    liff.closeWindow(); // ปิดหน้าจอทันที
+                    liff.closeWindow(); 
                 } else {
                     alert('ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
                 }
