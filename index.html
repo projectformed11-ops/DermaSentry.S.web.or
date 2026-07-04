@@ -111,12 +111,15 @@
             align-items: center;
         }
 
+        /* เปลี่ยนเป็น label เพื่อให้กดง่ายขึ้น */
         .option-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 8px;
             flex: 1;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .score-num {
@@ -136,22 +139,14 @@
             position: relative;
             background: #fff;
             margin: 0;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
         }
 
+        /* ปรับสไตล์ตอนเลือกใหม่เพื่อให้แสดงผลเสถียรบน iOS/Safari */
         input[type="radio"]:checked {
-            background-color: var(--accent-color);
-        }
-
-        input[type="radio"]:checked::after {
-            content: '';
-            width: 12px;
-            height: 12px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 8px solid var(--accent-color);
         }
 
         .legend-box {
@@ -257,15 +252,16 @@
         }
     }
 
+    // แก้ไขโครงสร้างตรงนี้เป็นแท็ก label เพื่อให้กดโดนง่ายขึ้น
     function renderOptions(groupId, name) {
         const container = document.getElementById(groupId);
         let html = '';
         for (let i = 1; i <= 5; i++) {
             html += `
-                <div class="option-item">
+                <label class="option-item">
                     <span class="score-num">${i}</span>
                     <input type="radio" name="${name}" value="${i}" required>
-                </div>
+                </label>
             `;
         }
         container.innerHTML = html;
@@ -297,13 +293,12 @@
             const formData = new FormData(document.getElementById('mainForm'));
             const data = {
                 userId: userId,
-                timestamp: new Date().toLocaleString('th-TH'),
+                timestamp: new Date().toISOString(), // ใช้ ISOString เพื่อความสากลและไม่เพี้ยนบน Server
                 project_name: "Analysis of Cutaneous Manifestations Record"
             };
             formData.forEach((value, key) => { data[key] = parseInt(value); });
 
             try {
-                // อัปเดตเป็น URL ใหม่ของ n8n ในโหมด Production เรียบร้อยแล้ว
                 const response = await fetch('https://t30511147.app.n8n.cloud/webhook/DermaSentry', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -314,11 +309,11 @@
                     alert('บันทึกแบบประเมินเรียบร้อยแล้ว ขอบคุณครับ');
                     liff.closeWindow(); 
                 } else {
-                    alert('ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+                    alert('ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง (Error Code: ' + response.status + ')');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
+                alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการตั้งค่า CORS บน n8n');
             }
         }
     }
